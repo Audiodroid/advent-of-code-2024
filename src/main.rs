@@ -8,10 +8,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     let file_path = "input.txt";
 
     let (column1, column2) = read_columns_from_file(file_path)?;
-
     let result = one::add_list_distances(column1, column2);
+    println!("Part One: {:?}", result);
 
-    println!("Result: {:?}", result);
+    let (column1, column2) = read_columns_from_file(file_path)?;
+    let result = one::add_similarity_score(column1, column2);
+    println!("Part Two: {:?}", result);
 
     Ok(())
 }
