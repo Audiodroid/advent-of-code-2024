@@ -1,16 +1,12 @@
 pub(crate) fn add_list_distances(mut list_a: Vec<i32>, mut list_b: Vec<i32>) -> i32
 {
-    if list_a.is_empty() && list_b.is_empty() {
-        return 0;
-    }
-
-    list_a.sort_unstable();
-    list_b.sort_unstable();
+    list_a.sort();
+    list_b.sort();
 
     let mut sum = 0;
     loop {
 
-        if list_a.is_empty() && list_b.is_empty()
+        if list_a.is_empty() || list_b.is_empty()
         {
             return sum;
         }
