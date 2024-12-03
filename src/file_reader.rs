@@ -4,6 +4,8 @@ use std::fs::File;
 use std::io::BufRead;
 use std::path::Path;
 
+
+
 pub(crate) fn read_columns_from_file(file_path: &str) -> Result<(Vec<i32>, Vec<i32>), Box<dyn Error>> {
     // Read the entire file content
     let content = fs::read_to_string(file_path)?;

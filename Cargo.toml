@@ -9,3 +9,4 @@ edition = "2021"
 rand = "0.8.5"
 reqwest = "0.12.9"
 tokio = { version = "1.41.1", features = ["rt", "rt-multi-thread", "macros"] }
+regex = "1.11.1"
