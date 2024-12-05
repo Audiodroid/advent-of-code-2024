@@ -48,5 +48,9 @@ fn three() -> Result<(), Box<dyn Error>> {
     let result = three::scan(&mut input_3);
     println!("3 - Part One: {:?}", result);
 
+    let mut input_3 = fs::read_to_string("resources/input_3.txt").unwrap().to_string();
+    let result = three::scan_do_not_dont(&mut input_3);
+    println!("3 - Part Two: {:?}", result);
+
     Ok(())
 }

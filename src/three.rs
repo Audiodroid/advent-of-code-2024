@@ -18,10 +18,33 @@ pub(crate) fn scan(input: &mut String) -> i32
 
     result
 }
+pub(crate) fn scan_do_not_dont(input: &mut String) -> i32
+{
+    let mut result = 0;
+    let mut begin = 0;
+
+    while let Some(pos) = input[begin..].find("don't()") {
+        let absolute_pos_begin = begin + pos;
+        let mut substring = input[begin..absolute_pos_begin].to_string();
+        result += scan(&mut substring);
+
+        let absolute_pos_end = absolute_pos_begin + ("don't()").len();
+        if let Some(new_pos) = input[absolute_pos_end..].find("do()") {
+            begin = absolute_pos_end + new_pos + ("do()").len();
+        }
+        else {
+            return result;
+        }
+    }
+
+    result += scan(&mut input[begin..].to_string());
+
+    result
+}
 
 #[cfg(test)]
 mod tests {
-    use crate::three::{scan};
+    use crate::three::{scan, scan_do_not_dont};
     #[test]
     fn scan_when_nothing_found_then_returns_zero()
     {
@@ -109,6 +132,97 @@ mod tests {
 
         // exercise
         let actual = scan(&mut input);
+
+        // evaluate
+        assert_eq!(actual, expected);
+    }
+    #[test]
+    fn scan_do_not_dont_when_no_dos_or_donts_then_returns_mul()
+    {
+        // outline
+        let mut input = String::from("xmul(2,4)");
+        let expected =  8;
+
+        // exercise
+        let actual = scan_do_not_dont(&mut input);
+
+        // evaluate
+        assert_eq!(actual, expected);
+    }
+    #[test]
+    fn scan_do_not_dont_when_dont_then_returns_zero()
+    {
+        // outline
+        let mut input = String::from("don't()xmul(2,4)");
+        let expected =  0;
+
+        // exercise
+        let actual = scan_do_not_dont(&mut input);
+
+        // evaluate
+        assert_eq!(actual, expected);
+    }
+    #[test]
+    fn scan_do_not_dont_when_mul_before_dont_then_returns_mul()
+    {
+        // outline
+        let mut input = String::from("xmul(3,3)don't()xmul(2,4)");
+        let expected =  9;
+
+        // exercise
+        let actual = scan_do_not_dont(&mut input);
+
+        // evaluate
+        assert_eq!(actual, expected);
+    }
+    #[test]
+    fn scan_do_not_dont_when_do_after_dont_then_returns_added_mul()
+    {
+        // outline
+        let mut input = String::from("xmul(3,3)don't()xmul(2,4)do()mul(3,3)");
+        let expected =  18;
+
+        // exercise
+        let actual = scan_do_not_dont(&mut input);
+
+        // evaluate
+        assert_eq!(actual, expected);
+    }
+    #[test]
+    fn scan_do_not_dont_when_dont_at_end_then_returns_added_mul_excluding_end()
+    {
+        // outline
+        let mut input = String::from("xmul(3,3)don't()xmul(2,4)do()mul(3,3)don't()mul(3,3)");
+        let expected =  18;
+
+        // exercise
+        let actual = scan_do_not_dont(&mut input);
+
+        // evaluate
+        assert_eq!(actual, expected);
+    }
+    #[test]
+    fn scan_do_not_dont_when_dont_without_apostrofy_then_ignored()
+    {
+        // outline
+        let mut input = String::from("xmul(3,3)don't()xmul(2,4)do()mul(3,3)dont()mul(3,3)");
+        let expected =  27;
+
+        // exercise
+        let actual = scan_do_not_dont(&mut input);
+
+        // evaluate
+        assert_eq!(actual, expected);
+    }
+    #[test]
+    fn scan_do_not_dont_when_example_then_returns_correct_result()
+    {
+        // outline
+        let mut input = String::from("xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))");
+        let expected =  48;
+
+        // exercise
+        let actual = scan_do_not_dont(&mut input);
 
         // evaluate
         assert_eq!(actual, expected);
