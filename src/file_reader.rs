@@ -28,7 +28,7 @@ pub(crate) fn read_columns_from_file(file_path: &str) -> Result<(Vec<i32>, Vec<i
     Ok((column1, column2))
 }
 
-pub(crate) fn read_rows_from_file(file_path: &str) -> Result<Vec<Vec<i32>>, Box<dyn Error>> {
+pub(crate) fn read_rows_of_numbers_from_file(file_path: &str) -> Result<Vec<Vec<i32>>, Box<dyn Error>> {
 
     let path = Path::new(file_path);
     let file = File::open(path)?;
@@ -44,6 +44,20 @@ pub(crate) fn read_rows_from_file(file_path: &str) -> Result<Vec<Vec<i32>>, Box<
                 .collect() // Collect into Vec<f64>
         })
         .collect();
+
+    Ok(rows)
+}
+pub(crate) fn read_rows_of_strings_from_file(file_path: &str) -> Result<Vec<&str>, Box<dyn Error>> {
+
+    let path = Path::new(file_path);
+    let file = File::open(path)?;
+    let reader = io::BufReader::new(file);
+
+    // Parse each line into a vector of numbers
+    let rows: Vec<&str> = reader
+        .lines()
+        .collect()
+        .unwrap();
 
     Ok(rows)
 }

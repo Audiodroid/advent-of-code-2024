@@ -202,7 +202,7 @@ mod tests {
         assert_eq!(actual, expected);
     }
     #[test]
-    fn scan_do_not_dont_when_dont_without_apostrofy_then_ignored()
+    fn scan_do_not_dont_when_dont_without_apostrophy_then_ignored()
     {
         // outline
         let mut input = String::from("xmul(3,3)don't()xmul(2,4)do()mul(3,3)dont()mul(3,3)");
