@@ -1,6 +1,5 @@
 
 pub(crate) mod search_directions {
-    use std::ops::Index;
 
     pub(crate) fn horizontal(input: Vec<String>) -> usize {
 
@@ -26,40 +25,21 @@ pub(crate) mod search_directions {
         }
 
         let mut transposed:Vec<String> = vec![String::with_capacity(string_size); vector_size];
-        for (i, string) in transposed.iter().enumerate() {
-            string = vecs_of_chars[i].into_iter().collect();
+        for (i, string) in transposed.iter_mut().enumerate() {
+            *string = vecs_of_chars[i].clone().into_iter().collect();
         }
 
         horizontal(transposed)
     }
 
-    pub(crate) fn diag_down_forwards(input: Vec<String>) -> usize {
+    pub(crate) fn diagonal_a(input: Vec<String>) -> usize {
         0
     }
 
-    pub(crate) fn diag_up_forwards(input: Vec<String>) -> usize {
-        0
-    }
-
-    pub(crate) fn diag_down_backwards(input: Vec<String>) -> usize {
-        0
-    }
-
-    pub(crate) fn diag_up_backwards(input: Vec<String>) -> usize {
-        0
-    }
 }
 #[cfg(test)]
 mod tests {
     use crate::four::search_directions;
-    use crate::four::search_directions::{
-        horizontal,
-        vertical,
-        diag_down_forwards,
-        diag_up_forwards,
-        diag_down_backwards,
-        diag_up_backwards };
-
     fn get_puzzle() -> Vec<String> {
         let mut puzzle:Vec<String> = vec![];
         puzzle.push("....XXMAS.".parse().unwrap());
@@ -97,6 +77,19 @@ mod tests {
 
         // exercise
         let actual = search_directions::vertical (puzzle);
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn search_when_diagonal_a_then_found()
+    {
+        // outline
+        let mut puzzle = get_puzzle();
+        let expected = 3;
+
+        // exercise
+        let actual = search_directions::diagonal_a (puzzle);
 
         assert_eq!(actual, expected);
     }
