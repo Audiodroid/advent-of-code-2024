@@ -29,7 +29,6 @@ fn one() -> Result<(), Box<dyn Error>> {
 
     Ok(())
 }
-
 fn two() -> Result<(), Box<dyn Error>> {
 
     let input_2 = "resources/input_2.txt";
@@ -59,7 +58,7 @@ fn three() -> Result<(), Box<dyn Error>> {
 fn four() -> Result<(), Box<dyn Error>> {
 
     let mut input_4 = file_reader::read_rows_of_strings_from_file("resources/input_4.txt")?;
-    let result = four::search_for_xmas(input_4);
+    let result = four::search_directions::horizontal(input_4);
     println!("4 - Part One: {:?}", result);
 
     Ok(())

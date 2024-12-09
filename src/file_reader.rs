@@ -47,17 +47,25 @@ pub(crate) fn read_rows_of_numbers_from_file(file_path: &str) -> Result<Vec<Vec<
 
     Ok(rows)
 }
-pub(crate) fn read_rows_of_strings_from_file(file_path: &str) -> Result<Vec<&str>, Box<dyn Error>> {
+pub(crate) fn read_rows_of_strings_from_file(file_path: &str) -> Result<Vec<String>, Box<dyn Error>> {
 
     let path = Path::new(file_path);
     let file = File::open(path)?;
     let reader = io::BufReader::new(file);
 
     // Parse each line into a vector of numbers
-    let rows: Vec<&str> = reader
+    let strings: Vec<_> = reader
         .lines()
-        .collect()
-        .unwrap();
+        .collect::<Vec<_>>()
+        .into_iter()
+        .filter_map(|result| match result {
+            Ok(string) => Some(string),
+            Err(err) => {
+                eprintln!("Error: {}", err);
+                None
+            }
+        })
+        .collect();
 
-    Ok(rows)
+    Ok(strings)
 }
